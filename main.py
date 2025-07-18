@@ -1,5 +1,6 @@
 import numpy as np
 from activations import *
+from losses import *
 np.random.seed(42)
 '''
 class neuron:
@@ -27,14 +28,17 @@ class Dense:
 		z = x @ self.weights.T + self.bias    # '@' Does matrix multiplication
 		return self.activation.forward(z)
 
-a= Dense(8, n_inputs = 4, activation='relu')
+a = Dense(4, n_inputs = 4, activation='relu')
 input_data=np.array([1,2,3,4])
 output=a.forward(input_data)
 
-print(output)
+print("Network output (y_pred):" , output)
 print('weights ', a.weights )
 print('bias ', a.bias )
 
+y_true=np.array([0,1,0,1])
+mse = mse()
+loss_value = mse.forward(output,y_true)
 
-
+print(loss_value)
 

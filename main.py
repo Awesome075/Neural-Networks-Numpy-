@@ -25,20 +25,37 @@ class Dense:
 			self.activation = activation
 		
 	def forward(self, x :np.ndarray):
+		self.input = x
 		z = x @ self.weights.T + self.bias    # '@' Does matrix multiplication
 		return self.activation.forward(z)
 
-a = Dense(4, n_inputs = 4, activation='relu')
-input_data=np.array([1,2,3,4])
+
+	def backward(self , grad_output : np.ndarray):
+		grad_activation =  self.activation.backward(grad_output)
+
+		self.weights_gradient = grad_activation.T @ self.input
+
+		self.bias_gradient = np.sum(grad_activation, axis = 0)
+
+		grad_input = grad_activation @ self.weights
+
+		return grad_input
+
+
+a = Dense(8, n_inputs = 8, activation='softmax')
+input_data=np.array([1,2,3,4,5,6,7,8])
 output=a.forward(input_data)
 
-print("Network output (y_pred):" , output)
+print("Network output (y_pred) : " , output)
 print('weights ', a.weights )
 print('bias ', a.bias )
 
-y_true=np.array([0,1,0,1])
+y_true=np.array([0,1,0,1,0,1,0,1])
 mse = mse()
 loss_value = mse.forward(output,y_true)
+print("Network Loss : ",loss_value)
 
-print(loss_value)
+loss_grad = mse.backward()
+final_grad = a.backward(loss_grad)
 
+print(final_grad)

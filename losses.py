@@ -17,7 +17,7 @@ class mse(loss):
 		return np.mean(np.square(y_org-y_pred))
 	
 	def backward(self):
-		pass
+		return 2*(self.y_pred - self.y_org)/self.y_org.size
 
 class mae(loss):
 	
@@ -28,7 +28,7 @@ class mae(loss):
 		return np.mean(np.abs(y_pred-y_org))
 	
 	def backward(self):
-		pass
+		return np.sign(self.y_pred - self.y_org)/self.y_org.size
 
 class sse(loss):
 	
@@ -39,7 +39,7 @@ class sse(loss):
 		return np.sum(np.square(y_pred-y_org))
 	
 	def backward(self):
-		pass
+		return 2*(self.y_pred-self.y_org)
 
 class categorical_cross_entropy(loss):
 	
@@ -55,7 +55,8 @@ class categorical_cross_entropy(loss):
 		return -np.sum(y_org * np.log(y_pred_clipped))
 
 	def backward(self):
-		pass
+		return (self.y_pred - self.y_org) / self.y_pred.size
+		
 
 class sparse_cross_entropy(loss):
 	
@@ -73,7 +74,16 @@ class sparse_cross_entropy(loss):
 		return np.mean(-np.log(correct_confidences))
 
 	def backward(self):
-		pass
+		samples = len(self.y_org)
+
+		if len(self.y_org.shape) == 1:
+			y_org_one_hot = np.zeros_like(self.y_pred)
+			y_org_one_hot[np.arange(samples),self.y_org] = 1
+
+		else:
+			y_org_one_hot = self.y_org
+
+		return (self.y_pred - y_org_one_hot) / samples
 
 
 LOSSES_MAP = {

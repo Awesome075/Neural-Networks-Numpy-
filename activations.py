@@ -39,7 +39,7 @@ class softmax(activation):
 	def forward(self, x : np.ndarray):
 	
 	# Original Softmax Formula
-#		return np.exp(x) / np.sum(np.exp(x))   
+	# 	return np.exp(x) / np.sum(np.exp(x))   
 			
 	# Stable Softmax Formula	
 		e_x = np.exp(x-np.max(x))

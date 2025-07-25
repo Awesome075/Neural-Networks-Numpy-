@@ -15,6 +15,12 @@ class Model:
 
 	def fit(self, x_train, y_train, epochs, batch_size=None):
 
+		#if isinstance(x_train, pd.DataFrame):
+		#	x_train = x_train.values
+		#if isinstance(y_train, pd,DataFrame):
+		#	y_train = y_train.values
+
+
 		for epoch in range(epochs):
 
 			output = x_train
@@ -35,5 +41,13 @@ class Model:
 			#4. UPDATE PARAMETERS
 			for layer in self.layers:
 				self.optimizer.update(layer)
+
+	def predict(self, x_test):
+
+		output = x_test
+		for layer in self.layers:
+			output = layer.forward(output)
+
+		return output
 
 

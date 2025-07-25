@@ -42,8 +42,11 @@ class softmax(activation):
 	# 	return np.exp(x) / np.sum(np.exp(x))   
 			
 	# Stable Softmax Formula	
-		e_x = np.exp(x-np.max(x))
-		return  e_x / np.sum(e_x)
+		max_x = np.max(x, axis=1, keepdims=True)
+		e_x = np.exp(x - max_x)
+		sum_e_x = np.sum(e_x, axis=1, keepdims=True)
+
+		return e_x / sum_e_x
 
 	def backward(self, grad_output : np.ndarray):
 	#	Mathematically Correct way

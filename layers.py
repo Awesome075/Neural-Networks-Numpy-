@@ -17,8 +17,8 @@ class neuron:
 class Dense:
 	def __init__(self, n_dimension : int , n_inputs : int,  activation):
 		
-		self.weights = np.random.rand(n_dimension,n_inputs)
-		self.bias = np.zeros(n_dimension)
+		self.weights = np.random.randn(n_dimension, n_inputs).astype(np.float32) * np.sqrt(2 / n_inputs)
+		self.bias = np.zeros(n_dimension, dtype=np.float32)
 
 		if isinstance(activation, str):
 			self.activation = ACTIVATION_MAP[activation.lower()]()
